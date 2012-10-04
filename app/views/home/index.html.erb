@@ -1,2 +1,38 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<%= form_tag keywords_path, :id => "js_keywords_form" do %>
+  <%= text_field_tag :keywords %>
+  <%= submit_tag "Submit" %>
+<% end %>
+
+<ol id="js_keywords_list">
+
+</ol>
+
+<% content_for :javascripts do %>
+<script type="text/javascript">
+  $("#js_keywords_form").submit(function(e) {
+    // Don't submit
+    e.preventDefault()
+
+    // AJAX request
+    $.ajax({
+      type: "POST",
+      url: $(this).attr("action"),
+      data: $(this).serialize(),
+      success: function(data) {
+        // Empty keywords list
+        $("#js_keywords_list").html("")
+
+        // Iterate through keywords and create <li>'s for them
+        $.each(data, function() {
+          $("#js_keywords_list").append($("<li>", {
+            text: this
+          }))
+        })
+      },
+      error: function(error) {
+
+      }
+    })
+  })
+</script>
+<% end %>

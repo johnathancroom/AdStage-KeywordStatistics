@@ -1,5 +1,7 @@
 KeywordStatistics::Application.routes.draw do
 
+  resources :keywords
+
   root :to => "home#index"
 
   # The priority is based upon order of creation:
